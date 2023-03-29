@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'http://localhost:5000',
 });
 
-export const getPosts = async () => {
-  const response = await api.get('/posts');
+export const getProducts = async () => {
+  const response = await api.get('/products');
   return response.data;
 };
