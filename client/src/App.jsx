@@ -52,7 +52,12 @@ function App() {
         {products.map((product) => (
           <li key={product.productId}>
             <h2 onClick={() => handleProductSelect(product.productId)}>{product.productName}</h2>
-            <p>{product.productOwnerName}</p>
+            <p>Product Number: {product.productId}</p>
+            <p>Scrum Master: {product.scrumMasterName}</p>
+            <p>Product Owner: {product.productOwnerName}</p>
+            <p>Developers: {product.developers && product.developers.join(', ')}</p>
+            <p>Start Date: {product.startDate}</p>
+            <p>Methodology: {product.methodology}</p>
             <button onClick={() => handleProductDelete(product.productId)}>Delete</button>
           </li>
         ))}
@@ -99,9 +104,9 @@ function ProductForm({ product = {}, onSubmit, onCancel }) {
       <div>
         <label htmlFor="productName">Product Name</label>
         <input type="text" id="productName" name="productName" value={formData.productName || ''} onChange={handleChange} required />
-      </div>
-      <div>
-        <label htmlFor="productOwnerName">Product Owner Name</label>
+</div>
+<div>
+<label htmlFor="productOwnerName">Product Owner Name</label>
 <input type="text" id="productOwnerName" name="productOwnerName" value={formData.productOwnerName || ''} onChange={handleChange} required />
 </div>
 <div>
@@ -120,8 +125,8 @@ function ProductForm({ product = {}, onSubmit, onCancel }) {
 <label htmlFor="methodology">Methodology</label>
 <select id="methodology" name="methodology" value={formData.methodology || ''} onChange={handleChange} required>
 <option value="">Select methodology</option>
-<option value="Scrum">Scrum</option>
-<option value="Kanban">Kanban</option>
+<option value="Agile">Agile</option>
+<option value="Waterfall">Waterfall</option>
 </select>
 </div>
 <div>
