@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { format } from 'date-fns';
-
 
 function ProductForm(props) {
   const [product, setProduct] = useState(props.product || {});
 
-  useEffect(() => {
-    setProduct(props.product || {});
-  }, [props.product]);
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.onSubmit(product);
-  };
-
-  const handleCancel = () => {
-    if (props.onCancel) {
-      props.onCancel();
-    } else {
-      setProduct({});
+    if (props.onSubmit) {
+      props.onSubmit(product);
     }
   };
 
@@ -27,31 +16,57 @@ function ProductForm(props) {
     setProduct({ ...product, [name]: value });
   };
 
-  const handleDevelopersChange = (event) => {
-    const developers = event.target.value.split(',');
-    setProduct({ ...product, developers });
+  const handleDeveloperChange = (event, index) => {
+    const { value } = event.target;
+    const developers = [...(product.Developers || [])];
+    developers[index] = value;
+    setProduct({ ...product, Developers: developers });
+  };
+
+  const handleAddDeveloper = () => {
+    const developers = [...(product.Developers || []), ''];
+    setProduct({ ...product, Developers: developers });
+  };
+
+  const handleRemoveDeveloper = (index) => {
+    const developers = [...(product.Developers || [])];
+    developers.splice(index, 1);
+    setProduct({ ...product, Developers: developers });
   };
 
   const startDate = product.startDate && Date.parse(product.startDate) ? format(new Date(product.startDate), 'yyyy-MM-dd') : '';
 
   return (
     <form onSubmit={handleSubmit}>
+      {product.productId === undefined && (
+        <div>
+          <p>Product Number: {props.productId}</p>
+        </div>
+      )}
       <div>
         <label htmlFor="productName">Product Name</label>
         <input type="text" id="productName" name="productName" value={product.productName || ''} onChange={handleChange} required />
       </div>
       <div>
-        <label htmlFor="productOwnerName">Product Owner Name</label>
+        <label htmlFor="productOwnerName">Product Owner</label>
         <input type="text" id="productOwnerName" name="productOwnerName" value={product.productOwnerName || ''} onChange={handleChange} required />
       </div>
       <div>
-        <label htmlFor="developers">Developers</label>
-        <input type="text" id="developers" name="developers" value={product.Developers?.join(', ') || ''} onChange={handleDevelopersChange} />
-      </div>
-      <div>
-        <label htmlFor="scrumMasterName">Scrum Master Name</label>
+        <label htmlFor="scrumMasterName">Scrum Master</label>
         <input type="text" id="scrumMasterName" name="scrumMasterName" value={product.scrumMasterName || ''} onChange={handleChange} required />
       </div>
+      {product.Developers && product.Developers.map((developer, index) => (
+        <div key={index}>
+          <label htmlFor={`developer${index}`}>Developer {index + 1}</label>
+          <div>
+            <input type="text" id={`developer${index}`} name={`developer${index}`} value={developer} onChange={(event) => handleDeveloperChange(event, index)} />
+            <button type="button" onClick={() => handleRemoveDeveloper(index)}>Remove</button>
+          </div>
+        </div>
+      ))}
+      {(!product.Developers || product.Developers.length < 5) && (
+        <button type="button" onClick={handleAddDeveloper}>Add Developer</button>
+      )}
       <div>
         <label htmlFor="startDate">Start Date</label>
         <input type="date" id="startDate" name="startDate" value={startDate} onChange={handleChange} required />
@@ -63,17 +78,17 @@ function ProductForm(props) {
             <option value="Agile">Agile</option>
             <option value="Waterfall">Waterfall</option>
         </select>
-        </div>
-        <div>
-            <button type="submit">{product.productId ? 'Update' : 'Create'}</button>
-            {props.onCancel && (
-            <button type="button" onClick={handleCancel}>
+    </div>
+    <div>
+        <button type="submit">{product.productId === undefined ? 'Create' : 'Update'}</button>
+        {props.onCancel && (
+        <button type="button" onClick={props.onCancel}>
             Cancel
-            </button>
-            )}
-        </div>
-        </form>
-    );
+        </button>
+        )}
+    </div>
+</form>
+);
 }
 
 export default ProductForm;
