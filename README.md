@@ -37,3 +37,7 @@ react-dom
 react-scripts
 
 It also uses a custom API module to fetch and manipulate data, which is included in the project.
+
+## Notice
+
+Refresh will NOT erase CRUD operations done but restart server WILL, since this application is using mock data from a local JSON file @ ```db.json``` instead of actually connecting to a database.
