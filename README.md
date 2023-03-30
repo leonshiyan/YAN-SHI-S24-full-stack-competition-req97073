@@ -17,9 +17,9 @@ Create a new product with the specified details.
 To run the application locally, follow these steps:
 
 1. Clone the repository to your local machine
-2. Install dependencies by running npm install
-3. Start the development server by running npm start
-4. Open http://localhost:3000 in a web browser to view the application
+2. Install dependencies by running  ```npm install```
+4. Start the development server by running ```npm start```
+5. Open ```http://localhost:3000``` in a web browser to view the application
 
 To create a new product, click the "Create Product" button at the top of the page. This will bring up a form where you can enter the product details. Click "Save" to submit the new product, or "Cancel" to close the form.
 
