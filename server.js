@@ -57,7 +57,7 @@ app.delete('/api/products/:productId', (req, res) => {
   const productId = parseInt(req.params.productId);
   const productIndex = data.products.findIndex((p) => p.productId === productId);
   if (productIndex === -1) {
-    res.status(404).send('Product not found');
+    res.status(404).json({ message: 'Product not found' });
   } else {
     data.products.splice(productIndex, 1);
     res.status(204).send();
