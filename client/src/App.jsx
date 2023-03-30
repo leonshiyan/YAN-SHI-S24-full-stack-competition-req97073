@@ -1,21 +1,20 @@
-// npm modules
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { getProducts, getProduct, createProduct, updateProduct, deleteProduct } from './api';
 
 import ProductForm from './components/ProductForm/ProductForm';
 
-
 function App() {
   const [products, setProducts] = useState([]);
+  const [scrumMasterName, setScrumMasterName] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts();
+      const data = await getProducts(scrumMasterName);
       setProducts(data);
     };
     fetchProducts();
-  }, []);
+  }, [scrumMasterName]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -49,23 +48,40 @@ function App() {
     setSelectedProduct(null);
   };
 
+  const handleScrumMasterNameChange = (event) => {
+    setScrumMasterName(event.target.value);
+  };
+
   return (
     <div className="App">
       <h1>Products</h1>
-      <ul>
-        {products.map((product) => (
-          <li key={product.productId}>
-            <h2 onClick={() => handleProductSelect(product.productId)}>{product.productName}</h2>
-            <p>Product Number: {product.productId}</p>
-            <p>Scrum Master: {product.scrumMasterName}</p>
-            <p>Product Owner: {product.productOwnerName}</p>
-            <p>Developers: {product.Developers && product.Developers.join(', ')}</p>
-            <p>Start Date: {product.startDate}</p>
-            <p>Methodology: {product.methodology}</p>
-            <button onClick={() => handleProductDelete(product.productId)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      <div className="search">
+        <label htmlFor="scrumMasterName">Search by Scrum Master:</label>
+        <input type="text" id="scrumMasterName" name="scrumMasterName" value={scrumMasterName} onChange={handleScrumMasterNameChange} />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Number</th>
+            <th>Product Name</th>
+            <th>Scrum Master</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.productId} onClick={() => handleProductSelect(product.productId)}>
+              <td>{product.productId}</td>
+              <td>{product.productName}</td>
+              <td>{product.scrumMasterName}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan="3">Total Products: {products.length}</td>
+          </tr>
+        </tfoot>
+      </table>
       <hr />
       {selectedProduct ? (
         <>
@@ -75,13 +91,11 @@ function App() {
       ) : (
         <>
           <h2>Create Product</h2>
-          <ProductForm onSubmit={handleProductCreate} />
+          <ProductForm onSubmit={handleProductCreate} nextProductId={products.length + 1} />
         </>
       )}
     </div>
   );
 }
 
-
-
-export default App
+export default App;
