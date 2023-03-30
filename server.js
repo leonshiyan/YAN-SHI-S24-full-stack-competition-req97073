@@ -24,9 +24,9 @@ app.get('/api/products/:productId', (req, res) => {
   const productId = parseInt(req.params.productId);
   const product = data.products.find((p) => p.productId === productId);
   if (!product) {
-    res.status(404).send('Product not found');
+    res.status(404).json({ message: 'Product not found' });
   } else {
-    res.json(product);
+    res.status(200).json(product);
   }
 });
 
