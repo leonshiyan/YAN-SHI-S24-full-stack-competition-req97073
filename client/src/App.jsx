@@ -62,8 +62,11 @@ function App() {
   };
 
   const handleFilterChange = (event) => {
-    setScrumMasterFilter(event.target.value);
+    const value = event.target.value;
+    setScrumMasterFilter(value);
+    setDeveloperFilter(value);
   };
+  
 
   return (
     <div className="App">
