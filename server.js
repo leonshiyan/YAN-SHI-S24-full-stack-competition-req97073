@@ -35,7 +35,7 @@ app.post('/api/products', (req, res) => {
   const product = req.body;
   product.productId = data.products.length + 1;
   data.products.push(product);
-  res.json(product);
+  res.status(201).json(product);
 });
 
 // Update an existing product
