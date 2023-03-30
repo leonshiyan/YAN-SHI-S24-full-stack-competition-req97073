@@ -43,12 +43,12 @@ app.put('/api/products/:productId', (req, res) => {
   const productId = parseInt(req.params.productId);
   const productIndex = data.products.findIndex((p) => p.productId === productId);
   if (productIndex === -1) {
-    res.status(404).send('Product not found');
+    res.status(404).json({ message: 'Product not found' });
   } else {
     const product = req.body;
     product.productId = productId;
     data.products[productIndex] = product;
-    res.json(product);
+    res.status(200).json(product);
   }
 });
 
