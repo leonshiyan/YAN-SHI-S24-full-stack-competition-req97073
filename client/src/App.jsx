@@ -20,9 +20,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const filtered = products.filter((product) => product.scrumMasterName.toLowerCase().includes(scrumMasterFilter.toLowerCase()));
+    const filtered = products.filter((product) => 
+      product.scrumMasterName.toLowerCase().includes(scrumMasterFilter.toLowerCase()) &&
+      product.Developers.some((developer) => developer.toLowerCase().includes(developerFilter.toLowerCase()))
+    );
     setFilteredProducts(filtered);
-  }, [scrumMasterFilter, products]);
+  }, [scrumMasterFilter, developerFilter, products]);
+  
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
