@@ -32,6 +32,8 @@ function ProductForm(props) {
     setProduct({ ...product, developers });
   };
 
+  const startDate = product.startDate && Date.parse(product.startDate) ? format(new Date(product.startDate), 'yyyy-MM-dd') : '';
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -52,7 +54,7 @@ function ProductForm(props) {
       </div>
       <div>
         <label htmlFor="startDate">Start Date</label>
-        <input type="date" id="startDate" name="startDate" value={format(new Date(product.startDate), 'yyyy-MM-dd') || ''} onChange={handleChange} required />
+        <input type="date" id="startDate" name="startDate" value={startDate} onChange={handleChange} required />
       </div>
       <div>
         <label htmlFor="methodology">Methodology</label>
