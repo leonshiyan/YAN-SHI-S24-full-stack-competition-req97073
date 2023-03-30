@@ -25,7 +25,7 @@
         ],
         "scrumMasterName": "Harry Wang",
         "startDate": "2022/02/15",
-        "methodology": "Scrum"
+        "methodology": "Agile"
     },
     {
         "productId": 3,
@@ -51,7 +51,7 @@
         ],
         "scrumMasterName": "Paul Zhang",
         "startDate": "2022/05/15",
-        "methodology": "Kanban"
+        "methodology": "Waterfall"
     },
     {
         "productId": 5,
@@ -76,7 +76,7 @@
         ],
         "scrumMasterName": "Yvonne Li",
         "startDate": "2022/08/15",
-        "methodology": "Scrum"
+        "methodology": "Agile"
     },
     {
         "productId": 7,

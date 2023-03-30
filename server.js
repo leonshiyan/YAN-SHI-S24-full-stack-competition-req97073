@@ -9,6 +9,11 @@ app.use(bodyParser.json());
 
 const data = require('./db.json');
 
+// Get heatlh endpoint status
+app.get('/health', (req, res) => {
+  res.sendStatus(200);
+});
+
 // Get all products
 app.get('/api/products', (req, res) => {
   res.json(data.products);
