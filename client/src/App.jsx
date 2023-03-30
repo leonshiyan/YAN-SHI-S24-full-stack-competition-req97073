@@ -6,15 +6,23 @@ import ProductForm from './components/ProductForm/ProductForm';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [scrumMasterName, setScrumMasterName] = useState('');
+  const [scrumMasterFilter, setScrumMasterFilter] = useState('');
+  const [developerFilter, setDeveloperFilter] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts(scrumMasterName);
+      const data = await getProducts();
       setProducts(data);
+      setFilteredProducts(data);
     };
     fetchProducts();
-  }, [scrumMasterName]);
+  }, []);
+
+  useEffect(() => {
+    const filtered = products.filter((product) => product.scrumMasterName.toLowerCase().includes(scrumMasterFilter.toLowerCase()));
+    setFilteredProducts(filtered);
+  }, [scrumMasterFilter, products]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -26,6 +34,7 @@ function App() {
   const handleProductCreate = async (product) => {
     const newProduct = await createProduct(product);
     setProducts([...products, newProduct]);
+    setFilteredProducts([...filteredProducts, newProduct]);
   };
 
   const handleProductUpdate = async (product) => {
@@ -34,6 +43,8 @@ function App() {
     const index = newProducts.findIndex((p) => p.productId === product.productId);
     newProducts[index] = updatedProduct;
     setProducts(newProducts);
+    const filtered = newProducts.filter((p) => p.scrumMasterName.toLowerCase().includes(scrumMasterFilter.toLowerCase()));
+    setFilteredProducts(filtered);
     setSelectedProduct(updatedProduct);
   };
 
@@ -41,6 +52,8 @@ function App() {
     await deleteProduct(productId);
     const newProducts = products.filter((p) => p.productId !== productId);
     setProducts(newProducts);
+    const filtered = newProducts.filter((p) => p.scrumMasterName.toLowerCase().includes(scrumMasterFilter.toLowerCase()));
+    setFilteredProducts(filtered);
     setSelectedProduct(null);
   };
 
@@ -48,54 +61,64 @@ function App() {
     setSelectedProduct(null);
   };
 
-  const handleScrumMasterNameChange = (event) => {
-    setScrumMasterName(event.target.value);
+  const handleFilterChange = (event) => {
+    setScrumMasterFilter(event.target.value);
   };
 
   return (
     <div className="App">
       <h1>Products</h1>
-      <div className="search">
-        <label htmlFor="scrumMasterName">Search by Scrum Master:</label>
-        <input type="text" id="scrumMasterName" name="scrumMasterName" value={scrumMasterName} onChange={handleScrumMasterNameChange} />
+      <div>
+        <label htmlFor="scrumMasterFilter">Search Scrum Master:</label>
+        <input type="text" id="scrumMasterFilter" value={scrumMasterFilter} onChange={handleFilterChange} />
       </div>
       <table>
         <thead>
           <tr>
-            <th>Product Number</th>
             <th>Product Name</th>
             <th>Scrum Master</th>
+            <th>Product Owner</th>
+            <th>Start Date</th>
+            <th>Methodology</th>
+            <th>Product Number</th>
+            <th>Developers</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.productId} onClick={() => handleProductSelect(product.productId)}>
-              <td>{product.productId}</td>
+          {filteredProducts.map((product) => (
+            <tr key={product.productId}>
               <td>{product.productName}</td>
               <td>{product.scrumMasterName}</td>
+              <td>{product.productOwnerName}</td>
+              <td>{product.startDate}</td>
+              <td>{product.methodology}</td>
+              <td>{product.productId}</td>
+              <td>{product.Developers.join()}</td>
+              <td>
+                <button onClick={() => handleProductSelect(product.productId)}>Edit</button>
+                <button onClick={() => handleProductDelete(product.productId)}>Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan="3">Total Products: {products.length}</td>
-          </tr>
-        </tfoot>
       </table>
+      <div>Total products found : {filteredProducts.length}</div>
       <hr />
       {selectedProduct ? (
-        <>
-          <h2>Edit Product</h2>
-          <ProductForm product={selectedProduct} onSubmit={handleProductUpdate} onCancel={handleProductClear} />
-        </>
+      <>
+      <h2>Edit Product</h2>
+        <ProductForm product={selectedProduct} onSubmit={handleProductUpdate} onCancel={handleProductClear} nextProductId={products.length + 1} />
+      </>
       ) : (
-        <>
-          <h2>Create Product</h2>
-          <ProductForm onSubmit={handleProductCreate} nextProductId={products.length + 1} />
-        </>
+      <>
+      <h2>Create Product</h2>
+        <ProductForm onSubmit={handleProductCreate} onCancel={handleProductClear} nextProductId={products.length + 1} />
+      </>
       )}
     </div>
   );
 }
-
 export default App;
+
+
