@@ -1,20 +1,25 @@
 # Product Manager App
-    This app is a simple product management tool that allows users to create, edit, and delete products and search for products by the name of the Scrum Master or the name of a Developer. The app is built using React, with data fetched from a REST API.
+This app is a simple product management tool that allows users to create, edit, and delete products and search for products by the name of the Scrum Master or the name of a Developer. The app is built using React, with data fetched from a REST API.
 
 ## Features
-    View a list of products with details such as name, Scrum Master, Product Owner, start date, methodology, product number, and developers.
-    Filter the products by the name of the Scrum Master or the name of a Developer.
-    Edit an existing product's details.
-    Delete a product from the list.
-    Create a new product with the specified details.
+View a list of products with details such as name, Scrum Master, Product Owner, start date, methodology, product number, and developers.
+
+Filter the products by the name of the Scrum Master or the name of a Developer.
+
+Edit an existing product's details.
+
+Delete a product from the list.
+
+Create a new product with the specified details.
+
 ## How to Use
-Getting Started
+
 To run the application locally, follow these steps:
 
-Clone the repository to your local machine
-Install dependencies by running npm install
-Start the development server by running npm start
-Open http://localhost:3000 in a web browser to view the application
+1. Clone the repository to your local machine
+2. Install dependencies by running npm install
+3. Start the development server by running npm start
+4. Open http://localhost:3000 in a web browser to view the application
 
 To create a new product, click the "Create Product" button at the top of the page. This will bring up a form where you can enter the product details. Click "Save" to submit the new product, or "Cancel" to close the form.
 
